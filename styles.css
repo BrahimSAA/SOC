@@ -1,0 +1,317 @@
+/* Basic reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: /*#f5f5f5 */ #000000;
+}
+
+header h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+/* Add a smooth transition for scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Main content styling */
+main {
+  padding: 2rem;
+  margin-top: 1rem;
+}
+
+.section {
+  background-color: rgb(24, 26, 27) /* #fff*/;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px /*0 4px 8px rgba(0, 0, 0, 0.1)*/;
+}
+
+.section h2 {
+  /*margin-bottom: 1rem;*/
+  color: #fff;
+  text-transform: capitalize;
+}
+
+/* Limit the video player size */
+video {
+  width: 100%;
+  max-width: 900px; /* Set a maximum width */
+  height: auto;
+  margin: 1rem auto; /* Center the video */
+  display: block;
+}
+
+.complete-btn {
+  background-color: #4caf50; /* Green color for Mark as Complete */
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+.complete-btn:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+/* Unmark button styling */
+.unmark-btn {
+  background-color: #f44336; /* Red color for Unmark */
+  border-radius: 5px;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+.unmark-btn:hover {
+  background-color: #d32f2f; /* Darker red on hover */
+}
+
+button {
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 2px;
+}
+
+/* Notes textarea styling */
+.notes-input {
+  width: 100%;
+  height: 150px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 1rem;
+  font-size: 1rem;
+  resize: vertical;
+  color: #fff;
+  background-color: black;
+}
+
+.notes-input:focus {
+  border-color: #4caf50; /* Green border on focus */
+  outline: none;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 1rem;
+  display: block;
+}
+
+#actuel {
+  background-color: #673ab7;
+  border-radius: 5px;
+  padding: 8px 12px;
+  color: white;
+  text-decoration: none;
+}
+
+/* Import Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+* :not(textarea){
+  font-family: "Poppins", sans-serif;
+}
+
+.arrow-button {
+  position: fixed; /* Ensure buttons stay in the same place while scrolling */
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  outline: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.arrow-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-50%) scale(1.1);
+}
+
+#left-arrow {
+  left: 20px; /* Keep on the left side of the viewport */
+}
+
+#right-arrow {
+  right: 20px; /* Keep on the right side of the viewport */
+}
+
+header {
+  background-color: black /*#005249*/;
+
+  padding: 10px 0;
+  /*position: fixed;*/
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  list-style: none;
+  padding: 0 60px; /* Ensure padding to avoid text under arrows */
+  margin: 0;
+  scroll-behavior: smooth;
+  flex-grow: 1; /* Ensure the carousel expands to fill available space */
+}
+
+.carousel::-webkit-scrollbar {
+  display: none; /* Hide scrollbars for a clean look */
+}
+
+.card {
+  flex: 0 0 auto;
+  padding: 10px 20px;
+  background-color: black;
+  border-radius: 5px;
+  /*box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);*/
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  -webkit-transition: transform 0.3s ease, background-color 0.3s ease;
+  -moz-transition: transform 0.3s ease, background-color 0.3s ease;
+  -ms-transition: transform 0.3s ease, background-color 0.3s ease;
+  -o-transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.card a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  background-color: #3d5da9;
+}
+
+.arrow {
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for visibility */
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10; /* Ensure arrows are above the carousel */
+}
+
+.arrow:hover {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+#left {
+  left: 10px;
+}
+
+#right {
+  right: 10px;
+}
+
+#backToTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+}
+
+#backToTop:hover {
+  background-color: #0056b3;
+}
+
+/* Export impor part*/
+
+#importButton {
+  display: none;
+}
+
+#exportButton {
+  position: fixed;
+  bottom: 20px;
+  right: 190px;
+  z-index: 1000;
+  background-color: #FF6500;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+}
+
+#exportButton:hover {
+  background-color: #fc7f2b;
+}
+
+#importDataButton {
+  position: fixed;
+  bottom: 20px;
+  right: 100px;
+  z-index: 1000;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+}
+
+#importDataButton:hover {
+  background-color: #49d34e;
+}
