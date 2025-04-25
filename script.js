@@ -12,22 +12,24 @@ function updateSectionTextColor(sectionId, color) {
 
 // Function to load completed sections and notes from localStorage on page load
 function loadCompletedSections() {
-  document.querySelectorAll(".section").forEach((section) => {
-    const sectionId = section.id;
-    const exist = localStorage.getItem(sectionId);
+    document.querySelectorAll(".section").forEach((section) => {
+        const sectionId = section.id;
+        const exist = localStorage.getItem(sectionId);
 
-    // Load completion status and apply background color
-    if (exist) {
-      updateSectionBackground(sectionId, "#0d660d");
-    }
+        // Load completion status and apply background color
+        if (exist) {
+            updateSectionBackground(sectionId, "#0d660d");
+        }
 
-    // Load and display notes from localStorage
-    const notesTextArea = section.querySelector(".notes-input");
-    const savedNotes = localStorage.getItem(`notes-${sectionId}`);
-    if (savedNotes) {
-      notesTextArea.value = savedNotes;
-    }
-  });
+        // Load and display notes from localStorage
+        const notesTextArea = section.querySelector(".notes-input");
+        const savedNotes = localStorage.getItem(`notes-${sectionId}`);
+        if (savedNotes) {
+            // Ensure textarea shows actual newlines
+            notesTextArea.value = savedNotes.replace(/\n/g, '
+');
+        }
+    });
 }
 
 // Function to handle "Mark as Complete" button click
@@ -232,17 +234,29 @@ document.getElementById('importButton').addEventListener('change', function(even
                 // Parse the JSON data from the file
                 const jsonData = JSON.parse(e.target.result);
 
-                // Loop through the parsed data and store it in localStorage
+                // Loop through the parsed data
                 for (const key in jsonData) {
                     if (jsonData.hasOwnProperty(key)) {
-                        localStorage.setItem(key, JSON.stringify(jsonData[key]));
+                        if (key.startsWith('notes-')) {
+                            // For notes, replace escaped newlines with actual newlines
+                            const notesValue = jsonData[key];
+                            const formattedNotes = typeof notesValue === 'string' ? 
+                                notesValue.replace(/\n/g, '
+') : 
+                                notesValue;
+                            localStorage.setItem(key, formattedNotes);
+                        } else {
+                            // For other data (completion status), store as-is
+                            localStorage.setItem(key, jsonData[key]);
+                        }
                     }
                 }
 
-                alert('Data imported successfully to localStorage!');
+                alert('Data imported successfully!');
                 location.reload(); // Refresh to show changes
             } catch (error) {
-                alert('Error parsing JSON file');
+                console.error('Error importing data:', error);
+                alert('Error importing data. Please check the console for details.');
             }
         };
 
