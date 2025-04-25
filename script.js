@@ -123,18 +123,20 @@ function handleFileImport(event) {
     reader.readAsText(file);
 }
 
-// Section completion and notes
+// In your loadCompletedSections function:
 function loadCompletedSections() {
+    const pagePath = window.location.pathname; // Get current page path
+    
     document.querySelectorAll(".section").forEach((section) => {
         const sectionId = section.id;
         
         // Load completion status
-        if (localStorage.getItem(sectionId)) {
+        if (localStorage.getItem(`${pagePath}-${sectionId}`)) {
             updateSectionStyle(section, true);
         }
         
         // Load notes
-        const notes = localStorage.getItem(`notes-${sectionId}`);
+        const notes = localStorage.getItem(`${pagePath}-notes-${sectionId}`);
         const notesTextArea = section.querySelector(".notes-input");
         if (notes && notesTextArea) {
             notesTextArea.value = notes;
@@ -142,24 +144,27 @@ function loadCompletedSections() {
     });
 }
 
+// In your setupEventListeners function:
 function setupEventListeners() {
+    const pagePath = window.location.pathname; // Get current page path
+    
     document.querySelectorAll('.section').forEach(section => {
         const completeButton = section.querySelector('.complete-btn');
         const unmarkButton = section.querySelector('.unmark-btn');
         const notesTextArea = section.querySelector('.notes-input');
         
         completeButton?.addEventListener('click', () => {
-            localStorage.setItem(section.id, 'completed');
+            localStorage.setItem(`${pagePath}-${section.id}`, 'completed');
             updateSectionStyle(section, true);
         });
         
         unmarkButton?.addEventListener('click', () => {
-            localStorage.removeItem(section.id);
+            localStorage.removeItem(`${pagePath}-${section.id}`);
             updateSectionStyle(section, false);
         });
         
         notesTextArea?.addEventListener('input', () => {
-            localStorage.setItem(`notes-${section.id}`, notesTextArea.value);
+            localStorage.setItem(`${pagePath}-notes-${section.id}`, notesTextArea.value);
         });
     });
 }
@@ -216,3 +221,53 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set up video controls
     setupVideoControls();
 });
+
+function exportData() {
+    const pagePath = window.location.pathname;
+    const localStorageData = {};
+    
+    // Only export data for the current page
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith(pagePath)) {
+            localStorageData[key] = localStorage.getItem(key);
+        }
+    }
+    
+    const blob = new Blob([JSON.stringify(localStorageData)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${titleContent}_backup.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+function handleFileImport(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const pagePath = window.location.pathname;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const jsonData = JSON.parse(e.target.result);
+            Object.entries(jsonData).forEach(([key, value]) => {
+                // Only import data that matches our current page path pattern
+                if (key.startsWith(pagePath)) {
+                    localStorage.setItem(key, typeof value === 'string' ? value.replace(/\\n/g, '\n') : value);
+                }
+            });
+            alert('Data imported successfully!');
+            location.reload();
+        } catch (error) {
+            console.error('Import error:', error);
+            alert('Error importing data. Please check the console.');
+        }
+    };
+    reader.readAsText(file);
+}
