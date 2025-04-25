@@ -1,281 +1,218 @@
-// Function to update section background color based on completion
-function updateSectionBackground(sectionId, color) {
-    const section = document.getElementById(sectionId);
-    section.style.backgroundColor = color;
-}
+// Enhanced with better mobile support and performance optimizations
 
-// Function to update section text color based on completion
-function updateSectionTextColor(sectionId, color) {
-    const section = document.getElementById(sectionId);
-    section.style.color = color;
-}
-
-// Function to load completed sections and notes from localStorage on page load
-function loadCompletedSections() {
-  document.querySelectorAll(".section").forEach((section) => {
-    const sectionId = section.id;
-    const exist = localStorage.getItem(sectionId);
-
-    // Load completion status and apply background color
-    if (exist) {
-      updateSectionBackground(sectionId, "#0d660d");
-    }
-
-    // Load and display notes from localStorage
-    const notesTextArea = section.querySelector(".notes-input");
-    const savedNotes = localStorage.getItem(`notes-${sectionId}`);
-    if (savedNotes) {
-      notesTextArea.value = savedNotes;
-    }
-  });
-}
-
-// Function to handle "Mark as Complete" button click
-function handleCompleteButtonClick(button, section) {
-    const sectionId = section.id;
-    // Change background color and store completion status in localStorage
-    updateSectionBackground(sectionId, '#0d660d');
-    const sec = document.getElementById(sectionId);
-    if (sec) {
-        // Change the color of all text within the section
-        sec.querySelectorAll('*').forEach(element => {
-            if (element.tagName.toLowerCase() !== 'textarea') {
-                element.style.color = "black";
-            }
-        });
-    } else {
-        console.error(`Section with ID ${sectionId} not found.`);
-    }
-    localStorage.setItem(sectionId, 'completed');
-}
-
-// Function to handle "Unmark" button click
-function handleUnmarkButtonClick(button, section) {
-    const sectionId = section.id;
-    // Revert background color and remove completion status from localStorage
-    updateSectionBackground(sectionId, 'rgb(24, 26, 27)');
-    const sec = document.getElementById(sectionId);
-    if (sec) {
-        // Change the color of all text within the section
-        sec.querySelectorAll('*').forEach(element => {
-            if (element.tagName.toLowerCase() !== 'button') {
-                element.style.color = "white";
-            }
-        });
-    } else {
-        console.error(`Section with ID ${sectionId} not found.`);
-    }
-
-    localStorage.removeItem(sectionId);
-}
-
-// Function to handle notes input and save them to localStorage
-function handleNotesInput(section) {
-    const sectionId = section.id;
-    const notesTextArea = section.querySelector('.notes-input');
-    notesTextArea.addEventListener('input', () => {
-        const notes = notesTextArea.value;
-        localStorage.setItem(`notes-${sectionId}`, notes);
-    });
-}
-
-// Run when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Load completed sections and notes from localStorage
-    loadCompletedSections();
-
-    // Add event listener to each "Mark as Complete" button
-    document.querySelectorAll('.section').forEach(section => {
-        const completeButton = section.querySelector('.complete-btn');
-        const unmarkButton = section.querySelector('.unmark-btn');
-
-        // Handle Mark as Complete button click
-        completeButton.addEventListener('click', () => {
-            handleCompleteButtonClick(completeButton, section);
-        });
-
-        // Handle Unmark button click
-        unmarkButton.addEventListener('click', () => {
-            handleUnmarkButtonClick(unmarkButton, section);
-        });
-
-        // Handle notes input for each section
-        handleNotesInput(section);
-    });
-});
-
-// Set the section title based on each video's filename
-document.querySelectorAll('.section').forEach(section => {
-    const videoTitle = section.querySelector('.video-title');
-    if (videoTitle) {
-        // Keep only the text starting from the word 'lesson'
-        const lessonIndex = videoTitle.textContent.indexOf('lesson');
-        if (lessonIndex !== -1) {
-            videoTitle.textContent = videoTitle.textContent.substring(lessonIndex);
-        }
-    }
-});
-
+// DOM Elements
 const carousel = document.querySelector(".carousel");
 const leftArrow = document.getElementById("left");
 const rightArrow = document.getElementById("right");
 const currentCard = document.getElementById("actuel");
+const backToTopButton = document.getElementById('backToTop');
+const exportButton = document.getElementById('exportButton');
+const importButton = document.getElementById('importButton');
+const importDataButton = document.getElementById('importDataButton');
+const titleContent = document.title;
 
-// Scroll to the "actuel" card on page load
-document.addEventListener("DOMContentLoaded", () => {
-    if (currentCard) {
+// Initialize on DOM load
+document.addEventListener('DOMContentLoaded', () => {
+    // Load saved data
+    loadCompletedSections();
+    
+    // Set up event listeners
+    setupEventListeners();
+    
+    // Scroll to current card in nav
+    scrollToCurrentCard();
+    
+    // Set up video controls
+    setupVideoControls();
+});
+
+// Scroll to current navigation card
+function scrollToCurrentCard() {
+    if (currentCard && carousel) {
         const carouselRect = carousel.getBoundingClientRect();
         const cardRect = currentCard.getBoundingClientRect();
-        const offset = cardRect.left - carouselRect.left - carouselRect.width / 2 + cardRect.width / 2;
-
+        const offset = cardRect.left - carouselRect.left - (carouselRect.width / 2) + (cardRect.width / 2);
+        
         carousel.scrollBy({
             left: offset,
             behavior: "smooth",
         });
     }
-});
+}
 
-// Scroll left or right on arrow click
+// Navigation arrows
 leftArrow.addEventListener("click", () => {
-    carousel.scrollBy({
-        left: -300,
-        behavior: "smooth",
-    });
+    carousel.scrollBy({ left: -200, behavior: "smooth" });
 });
 
 rightArrow.addEventListener("click", () => {
-    carousel.scrollBy({
-        left: 300,
-        behavior: "smooth",
-    });
+    carousel.scrollBy({ left: 200, behavior: "smooth" });
 });
 
-// Function to navigate between sections
+// Section navigation
 function navigateToSection(direction, currentIndex) {
     const sections = document.querySelectorAll('.section');
     let targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
-    const videos = document.querySelectorAll("video");
-    videos.forEach((video) => video.pause());
-
-    // Ensure targetIndex stays within bounds
+    
     if (targetIndex >= 0 && targetIndex < sections.length) {
-        sections[targetIndex].scrollIntoView({ behavior: 'smooth' });
-    } else if (direction === 'next') {
-        alert('You are at the last video!');
-    } else if (direction === 'prev') {
-        alert('You are at the first video!');
+        sections[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        alert(direction === 'next' ? 'You are at the last video!' : 'You are at the first video!');
     }
 }
 
+// Page navigation
 function navigate(targetPage) {
     window.location.href = targetPage;
 }
 
-// Get the button
-const backToTopButton = document.getElementById('backToTop');
-
-// Show the button when the user scrolls down 100px
+// Back to top button
 window.onscroll = function() {
-  if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-    backToTopButton.style.display = "block";
-  } else {
-    backToTopButton.style.display = "none";
-  }
+    backToTopButton.style.display = (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) 
+        ? "flex" : "none";
 };
 
-// Scroll to the top when the button is clicked
 backToTopButton.onclick = function() {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-var titleContent = document.title;
+// Data export
+exportButton.addEventListener('click', exportData);
 
-// Export button functionality
-document.getElementById('exportButton').addEventListener('click', function() {
-    // Convert localStorage data to an object
-    let localStorageData = {};
+function exportData() {
+    const localStorageData = {};
     for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
+        const key = localStorage.key(i);
         localStorageData[key] = localStorage.getItem(key);
     }
-
-    // Convert the object to a JSON string
-    let jsonData = JSON.stringify(localStorageData);
-
-    // Create a Blob from the JSON string
-    let blob = new Blob([jsonData], { type: 'application/json' });
-
-    // Create a link to download the file
-    let link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `${titleContent}.json`;
+    
+    const blob = new Blob([JSON.stringify(localStorageData)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${titleContent}_backup.json`;
+    document.body.appendChild(link);
     link.click();
-});
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
 
-// Import button functionality (trigger file input)
-document.getElementById('importDataButton').addEventListener('click', function() {
-    document.getElementById('importButton').click();
-});
+// Data import
+importDataButton.addEventListener('click', () => importButton.click());
+importButton.addEventListener('change', handleFileImport);
 
-// Handle file input change event for importing data
-document.getElementById('importButton').addEventListener('change', function(event) {
+function handleFileImport(event) {
     const file = event.target.files[0];
-
-    if (file && file.type === 'application/json') {
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-            try {
-                // Parse the JSON data from the file
-                const jsonData = JSON.parse(e.target.result);
-
-                // Loop through the parsed data
-                for (const key in jsonData) {
-                    if (jsonData.hasOwnProperty(key)) {
-                        if (key.startsWith('notes-')) {
-                            // For notes, replace escaped newlines with actual newlines
-                            const notesValue = jsonData[key];
-                            const formattedNotes = typeof notesValue === 'string' ? 
-                                notesValue.replace(/\\n/g, '\n') : 
-                                notesValue;
-                            localStorage.setItem(key, formattedNotes);
-                        } else {
-                            // For other data (completion status), store as-is
-                            localStorage.setItem(key, jsonData[key]);
-                        }
-                    }
-                }
-
-                alert('Data imported successfully!');
-                location.reload(); // Refresh to show changes
-            } catch (error) {
-                console.error('Error importing data:', error);
-                alert('Error importing data. Please check the console for details.');
-            }
-        };
-
-        // Read the file as text
-        reader.readAsText(file);
-    } else {
-        alert('Please select a valid JSON file');
-    }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const videos = document.querySelectorAll("video");
-
-  // Add play event listener to each video
-  videos.forEach((video) => {
-    video.addEventListener("play", () => {
-      // Pause all other videos
-      videos.forEach((otherVideo) => {
-        if (otherVideo !== video) {
-          otherVideo.pause();
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const jsonData = JSON.parse(e.target.result);
+            Object.entries(jsonData).forEach(([key, value]) => {
+                localStorage.setItem(key, typeof value === 'string' ? value.replace(/\\n/g, '\n') : value);
+            });
+            alert('Data imported successfully!');
+            location.reload();
+        } catch (error) {
+            console.error('Import error:', error);
+            alert('Error importing data. Please check the console.');
         }
-      });
+    };
+    reader.readAsText(file);
+}
+
+// Section completion and notes
+function loadCompletedSections() {
+    document.querySelectorAll(".section").forEach((section) => {
+        const sectionId = section.id;
+        
+        // Load completion status
+        if (localStorage.getItem(sectionId)) {
+            updateSectionStyle(section, true);
+        }
+        
+        // Load notes
+        const notes = localStorage.getItem(`notes-${sectionId}`);
+        const notesTextArea = section.querySelector(".notes-input");
+        if (notes && notesTextArea) {
+            notesTextArea.value = notes;
+        }
     });
-  });
+}
+
+function setupEventListeners() {
+    document.querySelectorAll('.section').forEach(section => {
+        const completeButton = section.querySelector('.complete-btn');
+        const unmarkButton = section.querySelector('.unmark-btn');
+        const notesTextArea = section.querySelector('.notes-input');
+        
+        completeButton?.addEventListener('click', () => {
+            localStorage.setItem(section.id, 'completed');
+            updateSectionStyle(section, true);
+        });
+        
+        unmarkButton?.addEventListener('click', () => {
+            localStorage.removeItem(section.id);
+            updateSectionStyle(section, false);
+        });
+        
+        notesTextArea?.addEventListener('input', () => {
+            localStorage.setItem(`notes-${section.id}`, notesTextArea.value);
+        });
+    });
+}
+
+function updateSectionStyle(section, isComplete) {
+    if (isComplete) {
+        section.style.backgroundColor = '#0d660d';
+        section.querySelectorAll('*').forEach(el => {
+            if (el.tagName.toLowerCase() !== 'textarea' && !el.classList.contains('button-group')) {
+                el.style.color = "#000";
+            }
+        });
+    } else {
+        section.style.backgroundColor = 'rgb(24, 26, 27)';
+        section.querySelectorAll('*').forEach(el => {
+            if (el.tagName.toLowerCase() !== 'button') {
+                el.style.color = "#fff";
+            }
+        });
+    }
+}
+
+function setupVideoControls() {
+    const videos = document.querySelectorAll("video");
+    videos.forEach(video => {
+        video.addEventListener("play", () => {
+            videos.forEach(v => v !== video && v.pause());
+        });
+    });
+}
+
+// In your script.js file, modify the initialization
+document.addEventListener('DOMContentLoaded', () => {
+    // Load saved data
+    loadCompletedSections();
+    
+    // Set up event listeners only if not mobile
+    if (window.innerWidth > 768) {
+        setupEventListeners();
+        
+        // Navigation arrows (only setup if not mobile)
+        leftArrow.addEventListener("click", () => {
+            carousel.scrollBy({ left: -200, behavior: "smooth" });
+        });
+        
+        rightArrow.addEventListener("click", () => {
+            carousel.scrollBy({ left: 200, behavior: "smooth" });
+        });
+    }
+    
+    // Scroll to current card in nav
+    scrollToCurrentCard();
+    
+    // Set up video controls
+    setupVideoControls();
 });

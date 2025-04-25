@@ -26,7 +26,7 @@
 <i class="fa-solid fa-angle-left arrow" id="left"></i>
 <ul class="carousel">
 <!-- Navigation items will be inserted here -->
-<li class="card"><a href="s1.html">1. Introduction</a></li>
+<li class="card"><a href="index.html">1. Introduction</a></li>
 <li class="card"><a href="s2.html">2. Lab Setup</a></li>
 <li class="card"><a href="s3.html">3. Security Operations Fundamentals</a></li>
 <li class="card"><a href="s4.html">4. Phishing Analysis</a></li>
@@ -203,10 +203,18 @@
 </section>
 </main>
 <!-- Footer elements -->
-<button id="backToTop" style="display: none;">Top</button>
-<button id="exportButton">Export</button>
+<div class="footer-buttons">
+<button id="backToTop" style="display: none;">
+<i class="fas fa-arrow-up"></i>
+</button>
+<button id="exportButton">
+<i class="fas fa-file-export"></i>
+</button>
 <input accept=".json" id="importButton" type="file"/>
-<button id="importDataButton">Import</button>
+<button id="importDataButton">
+<i class="fas fa-file-import"></i>
+</button>
+</div>
 <script src="script.js"></script>
 </body>
 </html>

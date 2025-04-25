@@ -26,7 +26,7 @@
 <i class="fa-solid fa-angle-left arrow" id="left"></i>
 <ul class="carousel">
 <!-- Navigation items will be inserted here -->
-<li class="card"><a href="index.html">1. Introduction</a></li>
+<li class="card" id="actuel"><a href="index.html">1. Introduction</a></li>
 <li class="card"><a href="s2.html">2. Lab Setup</a></li>
 <li class="card"><a href="s3.html">3. Security Operations Fundamentals</a></li>
 <li class="card"><a href="s4.html">4. Phishing Analysis</a></li>
@@ -35,26 +35,50 @@
 <li class="card"><a href="s7.html">7. Security Information and Event Management (SIEM)</a></li>
 <li class="card"><a href="s8.html">8. Threat Intelligence</a></li>
 <li class="card"><a href="s9.html">9. Digital Forensics</a></li>
-<li class="card" id="actuel"><a href="s10.html">11. Conclusion</a></li></ul>
+<li class="card"><a href="s10.html">11. Conclusion</a></li></ul>
 <i class="fa-solid fa-angle-right arrow" id="right"></i>
 </nav>
 </header>
 <!-- Navigation buttons -->
-<button class="arrow-button" id="left-arrow" onclick="navigate('s9.html')">←</button>
+<button class="arrow-button" id="right-arrow" onclick="navigate('s2.html')">→</button>
 <main>
 <!-- Video sections will be inserted here -->
 
-<section class="section" id="section123">
-<h2 class="video-title">123. Course Wrap Up</h2>
+<section class="section" id="section1">
+<h2 class="video-title">1. Course Introduction</h2>
 <div class="video-container">
-<iframe allow="autoplay" allowfullscreen="" class="drive-iframe" src="https://drive.google.com/file/d/14-QrF6FIzYfvpROObS7FmfxPCyb3XWfJ/preview">
+<iframe allow="autoplay" allowfullscreen="" class="drive-iframe" src="https://drive.google.com/file/d/14dZgFaYIwSEhNwKdyv3cohTVGdUeKJe3/preview">
 </iframe>
 </div>
 <button class="complete-btn">Mark as Complete</button>
 <button class="unmark-btn">Unmark</button>
 <button onclick="navigateToSection('prev', 0)">Previous Video</button>
 <button onclick="navigateToSection('next', 0)">Next Video</button>
-<textarea class="notes-input" id="notes123" placeholder="Write your notes here..."></textarea>
+<textarea class="notes-input" id="notes1" placeholder="Write your notes here..."></textarea>
+</section>
+<section class="section" id="section2">
+<h2 class="video-title">2. Prerequisites and Course Resources</h2>
+<div class="video-container">
+<iframe allow="autoplay" allowfullscreen="" class="drive-iframe" src="https://drive.google.com/file/d/14PpKr8gIPCpbaa59xamWGFhm_uIbLnB5/preview">
+</iframe>
+</div>
+<button class="complete-btn">Mark as Complete</button>
+<button class="unmark-btn">Unmark</button>
+<button onclick="navigateToSection('prev', 1)">Previous Video</button>
+<button onclick="navigateToSection('next', 1)">Next Video</button>
+<textarea class="notes-input" id="notes2" placeholder="Write your notes here..."></textarea>
+</section>
+<section class="section" id="section3">
+<h2 class="video-title">3. Course Discord and Support</h2>
+<div class="video-container">
+<iframe allow="autoplay" allowfullscreen="" class="drive-iframe" src="https://drive.google.com/file/d/14NI6Gd-S0PNxc4o-tZQoDup7x4O4waNB/preview">
+</iframe>
+</div>
+<button class="complete-btn">Mark as Complete</button>
+<button class="unmark-btn">Unmark</button>
+<button onclick="navigateToSection('prev', 2)">Previous Video</button>
+<button onclick="navigateToSection('next', 2)">Next Video</button>
+<textarea class="notes-input" id="notes3" placeholder="Write your notes here..."></textarea>
 </section>
 </main>
 <!-- Footer elements -->
