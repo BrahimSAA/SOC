@@ -315,8 +315,3 @@ header {
 #importDataButton:hover {
   background-color: #49d34e;
 }
-
-.notes-input {
-    white-space: pre-wrap; /* Preserve line breaks */
-    font-family: monospace; /* Optional: makes notes more readable */
-}

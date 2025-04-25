@@ -12,24 +12,22 @@ function updateSectionTextColor(sectionId, color) {
 
 // Function to load completed sections and notes from localStorage on page load
 function loadCompletedSections() {
-    document.querySelectorAll(".section").forEach((section) => {
-        const sectionId = section.id;
-        const exist = localStorage.getItem(sectionId);
+  document.querySelectorAll(".section").forEach((section) => {
+    const sectionId = section.id;
+    const exist = localStorage.getItem(sectionId);
 
-        // Load completion status and apply background color
-        if (exist) {
-            updateSectionBackground(sectionId, "#0d660d");
-        }
+    // Load completion status and apply background color
+    if (exist) {
+      updateSectionBackground(sectionId, "#0d660d");
+    }
 
-        // Load and display notes from localStorage
-        const notesTextArea = section.querySelector(".notes-input");
-        const savedNotes = localStorage.getItem(`notes-${sectionId}`);
-        if (savedNotes) {
-            // Ensure textarea shows actual newlines
-            notesTextArea.value = savedNotes.replace(/\n/g, '
-');
-        }
-    });
+    // Load and display notes from localStorage
+    const notesTextArea = section.querySelector(".notes-input");
+    const savedNotes = localStorage.getItem(`notes-${sectionId}`);
+    if (savedNotes) {
+      notesTextArea.value = savedNotes;
+    }
+  });
 }
 
 // Function to handle "Mark as Complete" button click
@@ -241,8 +239,7 @@ document.getElementById('importButton').addEventListener('change', function(even
                             // For notes, replace escaped newlines with actual newlines
                             const notesValue = jsonData[key];
                             const formattedNotes = typeof notesValue === 'string' ? 
-                                notesValue.replace(/\n/g, '
-') : 
+                                notesValue.replace(/\\n/g, '\n') : 
                                 notesValue;
                             localStorage.setItem(key, formattedNotes);
                         } else {
