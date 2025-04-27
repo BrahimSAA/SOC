@@ -250,10 +250,15 @@ main {
 .footer-buttons {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: 50%;
   display: flex;
   gap: 10px;
   z-index: 1000;
+  transform: translateX(50%);
+  -webkit-transform: translateX(50%);
+  -moz-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  -o-transform: translateX(50%);
 }
 
 #backToTop,
@@ -388,7 +393,7 @@ main {
 
   .footer-buttons {
     bottom: 15px;
-    right: 15px;
+    right: 50%;
   }
 
   #backToTop,
