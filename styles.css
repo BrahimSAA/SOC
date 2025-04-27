@@ -106,11 +106,14 @@ header {
 
 #left {
   left: 5px;
+  display: flex;
 }
 
 #right {
   right: 5px;
+  display: flex;
 }
+
 
 /* Main Content */
 main {
